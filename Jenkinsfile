@@ -5,7 +5,7 @@ metadata:
   name: dockerbuild
 spec:
   # Use service account that can deploy to all namespaces
-  serviceAccountName: cd-jenkins
+  serviceAccountName: nginx-ingress-serviceaccount
   containers:
     - name: helm
       image: alpine/helm
@@ -22,7 +22,6 @@ spec:
       command:
       - cat
       tty: true
-      # imagePullPolicy: Always
       env:
       - name: POD_IP
         valueFrom:
@@ -61,10 +60,10 @@ spec:
     stage ('Build Dockerfile and push image') {
       container('docker') {
         sh """
-        docker build -t serglavr/hello:${env.IMAGE_TAG} .
-        docker network create --driver=bridge hello
-        docker run -d --name=hello --net=hello serglavr/hello:${env.IMAGE_TAG}
-        docker run -i --net=hello appropriate/curl /usr/bin/curl hello:80
+        docker build -t ysukhy/some_image:${env.IMAGE_TAG} .
+        docker network create --driver=bridge some_image
+        docker run -d --name=some_image --net=some_image ysukhy/some_image:${env.IMAGE_TAG}
+        docker run -i --net=some_image appropriate/curl /usr/bin/curl some_image:80
         """
         if (env.CHANGE_ID == null) {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'f74f60fe-bc38-4b3e-ab91-d7af3416231e',
@@ -72,7 +71,7 @@ spec:
 
             sh """
             docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-            docker push serglavr/hello:${env.IMAGE_TAG}
+            docker push ysukhy/some_image:${env.IMAGE_TAG}
             """
 
           }
