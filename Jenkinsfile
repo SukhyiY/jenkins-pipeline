@@ -1,4 +1,4 @@
-podTemplate(label: 'buildtest', yaml: """
+podTemplate(label: 'buildtest', yml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -40,8 +40,8 @@ spec:
     - name: dind-storage
       emptyDir: {}
 """
-) {
-
+) 
+{
   node ('buildtest') {
     checkout(scm).each { k,v -> env.setProperty(k, v) }
 
