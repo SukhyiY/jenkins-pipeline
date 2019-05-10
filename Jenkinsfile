@@ -1,6 +1,7 @@
 {
-  node ('app-build') {
-    checkout(scm).each { k,v -> env.setProperty(k, v) }
+  node {
+    stage ('Checkout SCM'){
+        git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'}
 
     stage('Set correct image tag') {
       if (env.GIT_BRANCH == 'master') {
