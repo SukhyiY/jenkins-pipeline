@@ -21,13 +21,12 @@ node{
         """
         if (env.CHANGE_ID == null) {
           withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: 'f74f60fe-bc38-4b3e-ab91-d7af3416231e',
-                          usernameVariable: '.....', passwordVariable: '.....']]) 
-            {
+                          usernameVariable: '.....', passwordVariable: '.....']]) {
             sh """
             docker login -u $.... -p $....
             docker push ysukhy/some_image:${env.IMAGE_TAG}
             """
-            }
+          }
         }
       }
     }
