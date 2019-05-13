@@ -1,7 +1,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
 
-PodTemplate(label: 'flask-build', yaml: """
+podTemplate(label: 'flask-build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
