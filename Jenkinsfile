@@ -1,18 +1,14 @@
-{
-  node {
+node {
     stage ('Checkout SCM'){
         git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'}
 
     stage('Set correct image tag') {
       if (env.GIT_BRANCH == 'master') {
-        env.IMAGE_TAG="${env.GIT_BRANCH}-${env.GIT_COMMIT}"
-      }
+        env.IMAGE_TAG="${env.GIT_BRANCH}-${env.GIT_COMMIT}" }
       else if (env.TAG_NAME) {
-        env.IMAGE_TAG="${env.TAG_NAME}"
-      }
+        env.IMAGE_TAG="${env.TAG_NAME}" }
       else {
-        env.IMAGE_TAG="${env.GIT_BRANCH}"
-      }
+        env.IMAGE_TAG="${env.GIT_BRANCH}" }
     }
 
     stage ('Build Dockerfile and push image') {
