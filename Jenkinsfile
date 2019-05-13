@@ -27,6 +27,5 @@ node{
             sh 'docker push ysukhy/some_image:${env.IMAGE_TAG}'
           }
         }
-      }
     }
 }
