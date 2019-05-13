@@ -23,7 +23,7 @@ node{
           withCredentials([zip(credentialsId: 'docker-config',
                                     variable: 'DOCKER_CONFIG')]) {
             echo 'Pushing to Docker Hub'
-            container.push()
+            sh 'docker push ysukhy/some_image:${env.IMAGE_TAG}'
           }
         }
       }
