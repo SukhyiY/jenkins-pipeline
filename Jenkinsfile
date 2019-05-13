@@ -16,10 +16,6 @@ node{
     def container
     stage ('Build Dockerfile and push image to DockerHub') {
         container = docker.build('some_image:${env.IMAGE_TAG}')
-        //sh 'docker build --no-cache -t ysukhy/some_image:${env.IMAGE_TAG} .'
-        //sh 'docker network create --driver=bridge mynetwork'
-        //sh 'docker run -d --name=some_image --net=mynetwork ysukhy/some_image:${env.IMAGE_TAG}'
-        //sh 'docker run -i --net=mynetwork appropriate/curl /usr/bin/curl some_image:80'
         if (env.CHANGE_ID == null) {
           withCredentials([zip(credentialsId: 'docker-config',
                                     variable: 'DOCKER_CONFIG')]) {
