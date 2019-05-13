@@ -40,9 +40,11 @@ spec:
 ){
     
  node ('flask-build') {
-    stage ('Checkout SCM') {
+    
+   stage ('Checkout SCM') {
         git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
     }
+   
     stage('Set correct tags') {
       if (env.GIT_BRANCH == 'master') {
         env.IMAGE_TAG="${env.GIT_BRANCH}-${env.GIT_COMMIT}"
@@ -54,16 +56,21 @@ spec:
         env.IMAGE_TAG="${env.GIT_BRANCH}"
       }
     }
-    def container
+   
     stage ('Build Dockerfile and push image to DockerHub') {
-        container = docker.build('some_image:${env.IMAGE_TAG}')
+      container('docker') {
+        sh 'docker build --no-cache -t ysukhy/myimage:${env.IMAGE_TAG} .'
+        sh 'docker network create --driver=bridge myimage'
+        sh 'docker run -d --name=myimage --net=myimage ysukhy/myimage:${env.IMAGE_TAG}'
+        sh 'docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80'
         if (env.CHANGE_ID == null) {
           withCredentials([zip(credentialsId: 'docker-config',
                                     variable: 'DOCKER_CONFIG')]) {
             echo 'Pushing to Docker Hub'
-            sh 'docker push ysukhy/some_image:${env.IMAGE_TAG}'
+            sh 'docker push ysukhy/myimage:${env.IMAGE_TAG}'
           }
         }
+      }
     }
  }
 }
