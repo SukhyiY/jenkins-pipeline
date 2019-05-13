@@ -4,7 +4,7 @@ podTemplate(label: 'flask-build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
-  name: dockerbuild
+  name: flask-build
 spec:
   serviceAccountName: nginx-ingress-serviceaccount
   containers:
@@ -37,7 +37,7 @@ spec:
     - name: dind-storage
       emptyDir: {}
 """
-){
+) {
     
  node ('flask-build') {
     
@@ -64,13 +64,14 @@ spec:
         sh 'docker run -d --name=myimage --net=myimage ysukhy/myimage:${env.IMAGE_TAG}'
         sh 'docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80'
         if (env.CHANGE_ID == null) {
-          withCredentials([zip(credentialsId: 'docker-config',
-                                    variable: 'DOCKER_CONFIG')]) {
-            echo 'Pushing to Docker Hub'
+          withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub_pwd')]) {
+            sh 'docker login -u ysukhy -p ${dockerhub_pwd}'
             sh 'docker push ysukhy/myimage:${env.IMAGE_TAG}'
+          
           }
         }
       }
     }
+   
  }
 }
