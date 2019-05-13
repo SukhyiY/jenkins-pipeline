@@ -1,4 +1,45 @@
-node{
+def label = "mypod-${UUID.randomUUID().toString()}"
+
+podTemplate(label: 'flask-build', yaml: """
+apiVersion: v1
+kind: Pod
+metadata:
+  name: dockerbuild
+spec:
+  serviceAccountName: nginx-ingress-serviceaccount
+  containers:
+    - name: helm
+      image: alpine/helm
+      command:
+      - cat
+      tty: true
+    - name: docker
+      image: docker
+      command:
+      - cat
+      tty: true
+      # imagePullPolicy: Always
+      env:
+      - name: POD_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.podIP
+      - name: DOCKER_HOST
+        value: tcp://localhost:2375
+    - name: dind
+      image: docker:18.05-dind
+      securityContext:
+        privileged: true
+      volumeMounts:
+        - name: dind-storage
+          mountPath: /var/lib/docker
+  volumes:
+    - name: dind-storage
+      emptyDir: {}
+"""
+){
+    
+ node ('flask-build') {
     stage ('Checkout SCM') {
         git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
     }
@@ -24,4 +65,5 @@ node{
           }
         }
     }
+ }
 }
