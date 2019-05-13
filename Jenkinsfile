@@ -14,7 +14,7 @@ node{
       }
     }
     stage ('Build Dockerfile and push image to DockerHub') {
-      container('flask-image') {
+      container('docker') {
         sh 'docker build --no-cache -t ysukhy/some_image:${env.IMAGE_TAG} .'
         sh 'docker network create --driver=bridge mynetwork'
         sh 'docker run -d --name=some_image --net=mynetwork ysukhy/some_image:${env.IMAGE_TAG}'
