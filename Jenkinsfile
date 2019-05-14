@@ -40,7 +40,7 @@ spec:
 """
 ) {*/
     
-  node {
+  node('') {
     
     stage ('Checkout SCM') {
          git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
