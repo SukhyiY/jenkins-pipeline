@@ -1,7 +1,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
 
-/*podTemplate(label: 'flask-build', yaml: """
+podTemplate(label: 'build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -10,7 +10,7 @@ spec:
   serviceAccountName: nginx-ingress-serviceaccount
   containers:
     - name: helm
-      image: alpine/helm
+      image: alpine/helm:2.13.1
       command:
       - cat
       tty: true
@@ -38,9 +38,9 @@ spec:
     - name: dind-storage
       emptyDir: {}
 """
-) {*/
+) {
     
-  node('') {
+  node('build') {
     
     stage ('Checkout SCM') {
          git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
@@ -75,4 +75,4 @@ spec:
     }
    
   }
-//}
+}
