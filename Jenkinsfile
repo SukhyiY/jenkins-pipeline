@@ -1,7 +1,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
 
-podTemplate(label: 'flask-build', yaml: """
+/*podTemplate(label: 'flask-build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -38,7 +38,7 @@ spec:
     - name: dind-storage
       emptyDir: {}
 """
-) {
+) {*/
     
   node ('flask-build') {
     
