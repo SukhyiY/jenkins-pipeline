@@ -68,7 +68,7 @@ spec:
         if (env.CHANGE_ID == null) {
           withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub_pwd')]) {
             sh """
-            docker login -u ysukhy --password-stdin ${dockerhub_pwd}
+            docker login -u ysukhy -p ${dockerhub_pwd}
             docker push ysukhy/myimage:${env.IMAGE_TAG}
             """
           }
