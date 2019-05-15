@@ -1,7 +1,7 @@
 FROM python:3.6
 LABEL author="Yaroslav"
 WORKDIR /flask
-COPY ./flask-server.py ./flask-server.py
+COPY ./webapp.py ./webapp.py
 RUN pip install flask
 EXPOSE 80
-CMD python3 flask-server.py
+CMD python3 webapp.py
