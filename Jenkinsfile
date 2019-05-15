@@ -7,7 +7,7 @@ kind: Pod
 metadata:
   name: flask-build
 spec:
-  serviceAccountName: nginx-ingress-serviceaccount
+  serviceAccountName: jenkins
   containers:
     - name: helm
       image: alpine/helm:2.13.1
@@ -60,10 +60,10 @@ spec:
    
     stage ('Build Dockerfile and push image to DockerHub') {
       container('docker') {
-        sh 'docker build --no-cache -t ysukhy/myimage:${env.IMAGE_TAG} .'
+        /*sh 'docker build --no-cache -t ysukhy/myimage:${env.IMAGE_TAG} .'
         sh 'docker network create --driver=bridge myimage'
         sh 'docker run -d --name=myimage --net=myimage ysukhy/myimage:${env.IMAGE_TAG}'
-        sh 'docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80'
+        sh 'docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80'*/
         if (env.CHANGE_ID == null) {
           withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub_pwd')]) {
             sh 'docker login -u ysukhy -p ${dockerhub_pwd}'
