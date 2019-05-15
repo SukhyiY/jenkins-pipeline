@@ -1,4 +1,4 @@
-ROM python:3.6
+FROM python:3.6
 LABEL author="Yaroslav"
 WORKDIR /flask
 COPY ./flask-server.py ./flask-server.py
