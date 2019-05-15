@@ -5,7 +5,7 @@ podTemplate(label: 'flask-build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
-  name: flask-build
+  name: dockerbuild
 spec:
   serviceAccountName: jenkins
   containers:
