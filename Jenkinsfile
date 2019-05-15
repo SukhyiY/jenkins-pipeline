@@ -1,7 +1,7 @@
 def label = "mypod-${UUID.randomUUID().toString()}"
 
 
-podTemplate(label: 'build', yaml: """
+podTemplate(label: 'flask-build', yaml: """
 apiVersion: v1
 kind: Pod
 metadata:
@@ -40,7 +40,7 @@ spec:
 """
 ) {
     
-  node('build') {
+  node('flask-build') {
     
     stage ('Checkout SCM') {
          git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
