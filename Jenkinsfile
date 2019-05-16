@@ -39,11 +39,14 @@ spec:
 ) {
     
   node('flask-build') {
+        
+    stage ('Checkout SCM') {
+        git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
+    }
     
-    checkout(scm).each { k,v -> env.setProperty(k, v) }
     stage('Set correct tags') {
       if (env.GIT_BRANCH == 'master') {
-        env.IMAGE_TAG="${env.GIT_BRANCH}-${env.GIT_COMMIT}"
+        env.IMAGE_TAG="${env.GIT_COMMIT}"
       }
       else if (env.TAG_NAME) {
         env.IMAGE_TAG="${env.TAG_NAME}"
