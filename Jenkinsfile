@@ -89,10 +89,10 @@ spec:
     stage ('Deploy Helm chart') {
       if (env.GIT_BRANCH == 'master' || env.TAG_NAME) {
         container('helm') {
-          withCredentials([file(credentialsId: '_____', variable: '____'), file(credentialsId: '____', variable: '____')]) {
+          withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBE'), file(credentialsId: 'certificate', variable: 'KEY')]) {
               sh """
-              cp $____ ./kubeconfig
-              cp $____ ./__________.pem
+              cp $KUBE ./kubeconfig
+              cp $KEY ./ca-mil01-TestCluster.pem
               helm init --client-only
               helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig
               """
