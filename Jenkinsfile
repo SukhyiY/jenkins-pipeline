@@ -39,7 +39,10 @@ spec:
 ) {
     
   node('flask-build') {
-    checkout(scm).each { k,v -> env.setProperty(k, v) }    
+    
+    stage ('Checkout SCM') {
+        git credentialsId: 'git-creds', url: 'https://github.com/SukhyiY/jenkins-pipeline'
+    }
     
     stage('Set correct tags') {
       if (env.GIT_BRANCH == 'master') {
