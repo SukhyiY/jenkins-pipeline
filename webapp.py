@@ -4,7 +4,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def hello():
-    image_tag = os.environ.get('app-version')
+    image_tag = os.environ.get('app_version')
     return render_template('index.html', image_tag=image_tag)
 
 if __name__ == "__main__":
