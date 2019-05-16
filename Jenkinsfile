@@ -57,14 +57,24 @@ spec:
       }
     }
    
-    stage ('Build Dockerfile and push image to DockerHub') {
+    stage ('Build Dockerfile of flask-app') {
       container('docker') {
+        sh "docker build --no-cache -t ysukhy/myimage:${env.IMAGE_TAG} ."
+      }
+    }
+    
+    stage ('Test connection') {
+      container ('docker') {
         sh """
-        docker build --no-cache -t ysukhy/myimage:${env.IMAGE_TAG} .
         docker network create --driver=bridge myimage
-        docker run -d --name=myimage --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
+        docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
         docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80
         """
+      }
+    }
+    
+    stage ('Push image to DockerHub') {
+      container ('docker') {    
         if (env.CHANGE_ID == null) {
           withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub_pwd')]) {
             sh """
@@ -76,5 +86,19 @@ spec:
       }
     }
    
+    stage ('Deploy Helm chart') {
+      if (env.GIT_BRANCH == 'master' || env.TAG_NAME) {
+        container('helm') {
+          withCredentials([file(credentialsId: '_____', variable: '____'), file(credentialsId: '____', variable: '____')]) {
+              sh """
+              cp $____ ./kubeconfig
+              cp $____ ./__________.pem
+              helm init --client-only
+              helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig
+              """
+          }
+        }
+      }
+    }
   }
 }
