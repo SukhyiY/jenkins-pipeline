@@ -64,8 +64,11 @@ spec:
         sh """
         docker network create --driver=bridge myimage
         docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
-        docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80
         """
+        rc = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
+         if (rc != 0) { 
+            sh "echo 'ACHTUNG! Curl status ist nichts gekommen'"
+         }        
       }
     }
     
