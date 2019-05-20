@@ -61,14 +61,13 @@ spec:
     
     stage ('Test connection') {
       container ('docker') {
-        sh """
-        docker network create --driver=bridge myimage
-        docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
-        """
-        rc = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
-         if (rc != 0) { 
-            sh "echo 'ACHTUNG! Curl status ist nichts gekommen'"
-         }        
+        sh "docker network create --driver=bridge myimage"
+        sh "docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}"
+        def status = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
+        if (status.contains("${env.IMAGE_TAG}")) {
+          echo "Meine Respektierung!" }
+        else {
+          echo "ACHTUNG! Curl status ist nichts gekommen" }        
       }
     }
     
@@ -76,10 +75,8 @@ spec:
       container ('docker') {    
         if (env.CHANGE_ID == null) {
           withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerhub_pwd')]) {
-            sh """
-            docker login -u ysukhy -p ${dockerhub_pwd}
-            docker push ysukhy/myimage:${env.IMAGE_TAG}
-            """
+            sh "docker login -u ysukhy -p ${dockerhub_pwd}"
+            sh "docker push ysukhy/myimage:${env.IMAGE_TAG}"
           }
         }
       }
@@ -89,12 +86,10 @@ spec:
       if (env.GIT_BRANCH == 'master' || env.TAG_NAME) {
         container('helm') {
           withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBE'), file(credentialsId: 'certificate', variable: 'KEY')]) {
-              sh """
-              cp $KUBE ./kubeconfig
-              cp $KEY ./ca-mil01-TestCluster.pem
-              helm init --client-only
-              helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig
-              """
+              sh "cp $KUBE ./kubeconfig"
+              sh "cp $KEY ./ca-mil01-TestCluster.pem"
+              sh "helm init --client-only"
+              sh "helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig"
           }
         }
       }
