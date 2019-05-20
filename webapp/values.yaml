@@ -32,9 +32,9 @@ ingress:
 
 hpa:
   enabled: true
-  maxReplicas: 4
   minReplicas: 1
-  cpu: 70
+  maxReplicas: 3
+  cpu: 40
 
 resources:
    requests:
