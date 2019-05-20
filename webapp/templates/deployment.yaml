@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "webapp.name" . }}
@@ -19,8 +19,8 @@ spec:
         app.kubernetes.io/name: {{ include "webapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
-        autoscale/maxReplicas: "{{ .Values.hpa.maxReplicas }}"
         autoscale/minReplicas: "{{ .Values.hpa.minReplicas }}"
+        autoscale/maxReplicas: "{{ .Values.hpa.maxReplicas }}"
         autoscale/cpu: "{{ .Values.hpa.cpu }}"
     spec:
       containers:
