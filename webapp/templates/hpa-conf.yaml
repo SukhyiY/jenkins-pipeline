@@ -8,7 +8,7 @@ spec:
     apiVersion: apps/v1beta1
     kind: Deployment
     name: {{ include "webapp.fullname" . }}
-  minReplicas: {{ .Values.hpa.minReplicas }}
+  minReplicas: {{ .Values.hpa.replicaCount }}
   maxReplicas: {{ .Values.hpa.maxReplicas }}
   {{- if .Values.hpa.cpu }}
   metrics:
