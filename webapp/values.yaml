@@ -7,7 +7,7 @@ hpa:
   replicaCount: 1
   minReplicas: 1
   maxReplicas: 4
-  cpu: 30
+  cpu: 20
 
 image:
   repository: ysukhy/myimage
