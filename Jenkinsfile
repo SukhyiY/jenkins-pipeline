@@ -61,8 +61,10 @@ spec:
     
     stage ('Test connection') {
       container ('docker') {
-        sh "docker network create --driver=bridge myimage"
-        sh "docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}"
+        sh """
+        docker network create --driver=bridge myimage
+        docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
+        """
         def status = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
         if (status.contains("${env.IMAGE_TAG}")) {
           echo "Meine Respektierung!" }
