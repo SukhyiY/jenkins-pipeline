@@ -1,14 +1,6 @@
 # Default values for webapp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
-hpa:
-  enabled: true
-  replicaCount: 1
-  minReplicas: 1
-  maxReplicas: 4
-  cpu: 20
-
 image:
   repository: ysukhy/myimage
   tag: latest
@@ -36,10 +28,15 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
+hpa:
+  enabled: true
+  replicaCount: 1
+  maxReplicas: 3
+  cpu: 70
+
 resources:
    requests:
      cpu: 100m
-  #   memory: 128Mi
 
 nodeSelector: {}
 
