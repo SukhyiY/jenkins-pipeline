@@ -51,7 +51,7 @@ spec:
       else {
         env.IMAGE_TAG="${env.GIT_BRANCH}"
       }
-      if (env.IMAGE_TAG == ${env.GIT_COMMIT}) {
+      if (env.IMAGE_TAG == '${env.GIT_COMMIT}') {
         env.IMAGE_TAG="v.1.0.0"
       }
     }
