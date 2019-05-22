@@ -43,16 +43,13 @@ spec:
     
     stage('Set correct tags') {
       if (env.GIT_BRANCH == 'master') {
-        env.IMAGE_TAG="${env.GIT_COMMIT}"
+        env.IMAGE_TAG="v.1.0.0."
       }
       else if (env.TAG_NAME) {
         env.IMAGE_TAG="${env.TAG_NAME}"
       }
       else {
         env.IMAGE_TAG="${env.GIT_BRANCH}"
-      }
-      if (env.IMAGE_TAG == '${env.GIT_COMMIT}') {
-        env.IMAGE_TAG="v.1.0.0"
       }
     }
    
