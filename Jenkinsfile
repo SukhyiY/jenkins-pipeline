@@ -91,7 +91,7 @@ spec:
               sh "cp $KUBE ./kubeconfig"
               sh "cp $KEY ./ca-hou02-K8sCluster.pem"
               sh "helm init --client-only"
-              sh "helm upgrade new-cluster./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig"
+              sh "helm upgrade new-cluster ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig"
           }
         }
       }
