@@ -69,7 +69,7 @@ spec:
         if (status.contains("${env.IMAGE_TAG}")) {
           echo "Meine Respektierung!" }
         else {
-          echo "ACHTUNG! Curl status ist nichts gekommen" }        
+          echo "Curl status ist nichts gekommen" }        
       }
     }
     
