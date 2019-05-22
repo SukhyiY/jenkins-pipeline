@@ -89,7 +89,7 @@ spec:
         container('helm') {
           withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBE'), file(credentialsId: 'certificate', variable: 'KEY')]) {
               sh "cp $KUBE ./kubeconfig"
-              sh "cp $KEY ./ca-mil01-TestCluster.pem"
+              sh "cp $KEY ./ca-hou02-K8sCluster.pem"
               sh "helm init --client-only"
               sh "helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --kubeconfig ./kubeconfig"
           }
