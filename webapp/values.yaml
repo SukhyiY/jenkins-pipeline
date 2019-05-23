@@ -29,12 +29,17 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+  
+strategy:
+  type: RollingUpdate
+  maxSurge: 1
+  maxUnavailable: 1
 
 hpa:
   enabled: true
   minReplicas: 1
   maxReplicas: 4
-  cpu: 40
+  cpu: 50
 
 resources:
    requests:
