@@ -39,7 +39,7 @@ hpa:
   enabled: true
   minReplicas: 1
   maxReplicas: 4
-  cpu: 50
+  cpu: 25
 
 resources:
    requests:
