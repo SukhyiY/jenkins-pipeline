@@ -67,9 +67,11 @@ spec:
         """
         def status = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
         if (status.contains("${env.IMAGE_TAG}")) {
-          echo "SUCCESS!" }
+          echo "CURL SUCCESS!" 
+        }
         else {
-          echo "CURL ERROR" }        
+          echo "CURL ERROR" 
+        }
       }
     }
     
