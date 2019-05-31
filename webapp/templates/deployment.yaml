@@ -24,9 +24,9 @@ spec:
         app.kubernetes.io/name: {{ include "webapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
       annotations:
-        autoscale/minReplicas: {{ .Values.hpa.minReplicas }}
-        autoscale/maxReplicas: {{ .Values.hpa.maxReplicas }}
-        autoscale/cpu: {{ .Values.hpa.cpu }}
+        autoscale/minReplicas: "{{ .Values.hpa.minReplicas }}"
+        autoscale/maxReplicas: "{{ .Values.hpa.maxReplicas }}"
+        autoscale/cpu: "{{ .Values.hpa.cpu }}"
     spec:
       containers:
         - name: {{ .Chart.Name }}
