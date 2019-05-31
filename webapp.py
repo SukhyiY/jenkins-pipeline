@@ -3,7 +3,7 @@ import os
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
+def myimage():
     image_tag = os.environ.get('app_version')
     return render_template('index.html', image_tag=image_tag)
 
