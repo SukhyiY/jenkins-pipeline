@@ -61,18 +61,30 @@ spec:
     
     stage ('Test connection') {
       container ('docker') {
-        sh """
-        docker network create --driver=bridge myimage
-        docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}
-        """
-        def status = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
-        if (status.contains("${env.IMAGE_TAG}")) {
-          echo "CURL SUCCESS!" 
+        sh "docker network create --driver=bridge myimage"
+        sh "docker run -d --name=myimage -e app_version="${env.IMAGE_TAG}" --net=myimage ysukhy/myimage:${env.IMAGE_TAG}"
+        
+        def pair = [:]
+        pair["test_connection"] = {
+          def connection = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStatus: true)
+            if (connection == 0) {
+              echo "Connection SUCCESS"
+            }
+            else {
+              error "Connection FAILED"
+            }
         }
-        else {
-          echo "CURL ERROR" 
+        pair["test_output"] = { 
+          def output = sh(script: "docker run -i --net=myimage appropriate/curl /usr/bin/curl myimage:80", returnStdout: true)
+            if (output.contains("${env.IMAGE_TAG}")) {
+              echo "CURL SUCCESS!" 
+            }
+            else {
+              error "CURL FAILED" 
+            }
         }
-      }
+        parallel pair
+      }  
     }
     
     stage ('Push image to DockerHub') {
