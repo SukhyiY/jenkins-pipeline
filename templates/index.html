@@ -4,6 +4,6 @@
  <p>Server version: {{ image_tag }}</p>
 </head>
 <body>
- <img src="Flask-logo.png" alt="Flask-logo">
+ <img src="{{url_for('templates', filename=flask_image)}}" alt="Flask-logo">
 </body>
 </html>
