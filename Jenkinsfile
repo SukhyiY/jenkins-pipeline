@@ -107,7 +107,7 @@ spec:
               sh "cp $KUBE ./kubeconfig"
               sh "cp $KEY ./ca-hou02-K8sCluster.pem"
               sh "helm init --client-only"
-              sh "helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --wait --kubeconfig ./kubeconfig"
+              sh "helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --wait --timeout 100 --kubeconfig ./kubeconfig"
           }
         }
       }
