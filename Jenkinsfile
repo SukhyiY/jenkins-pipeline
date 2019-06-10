@@ -104,7 +104,7 @@ spec:
       if (env.GIT_BRANCH == 'master' || env.TAG_NAME) {
         container('helm') {
           withCredentials([file(credentialsId: '2conf', variable: 'all_in_one')]) {
-              sh "cp $all_in_one ./kubeconfig"
+              sh "cp ${all_in_one} ./kubeconfig"
               sh "helm init --client-only"
               sh "helm upgrade first-release ./webapp --set image.tag=${env.IMAGE_TAG} --install --wait --timeout 100 --kubeconfig ./kubeconfig"
           }
